@@ -18,7 +18,7 @@ newData<-data.frame(ano,fertilityRate,laborRate,gini,desemprego)
 
 
 ##############################################
-####### Visualiza????o de Dados ################
+####### Data Visualization ################
 
 maximo.FR<-max(newData_semNa$fertilityRate)
 
@@ -65,7 +65,7 @@ graf+ stat_smooth(
 graf+scale_x_date(date_breaks = "5 year", date_labels = "%Y")
 
 ########################################
-######An??lises Estat??sticas#############
+######Statistical Analysis #############
 ########################################
 
 p<-cor(fertilityRate,gini, method = "pearson", use = "complete.obs")
@@ -97,7 +97,7 @@ fertility_gini+theme(panel.background = element_rect(fill = "#f3ebdb",colour = "
 #                                xlab = "Fecundidade",
 #                                ylab = "Desemprego",font.label = c(12, "plain") )
 
-#Fun????o criada manualmente 
+#Creating a Pearson Function 
 pearson<- function(x,y) { 
   
   med.x<-mean(x)
@@ -125,14 +125,14 @@ pearson<- function(x,y) {
   return(r)
 }
 
-# Retirando linhas contendo valores ausentes 
+# Removing lines with NA
 newData_semNa<-na.omit(newData)
 
-#Calculando o coeficiente de pearson por meio da fun????o criada anteriormente 
+# Using Pearson Function 
 p.pearson<-pearson(newData_semNa$fertilityRate, newData_semNa$gini)
 
 
-#Calculando p-valor manualmente 
+# P-value manually calculated 
 dist<-numeric(1000000)
 for(i in 1:1000000){ 
   dist[i]<-pearson(sample(newData_semNa$fertilityRate),sample(newData_semNa$gini))}
@@ -140,12 +140,11 @@ for(i in 1:1000000){
 as.numeric(dist>p.pearson)
 sum(as.numeric(dist>p.pearson))/length(dist)
 
-#Calculando coeficiente de pearson e p-valor a partir das
-# fun????es presentes no R 
+# Calculation pearson coefficient and p-value using built-in functions 
 cor.test(newData_semNa$fertilityRate, newData_semNa$gini)
 
 
-# Calculando coeficiente de regress??o 
+# Linear Model coefficient 
 lm(newData_semNa$fertilityRate~ newData_semNa$gini)
 plot(newData_semNa$fertilityRate~ newData_semNa$gini)
 abline(lm(newData_semNa$fertilityRate~ newData_semNa$gini))
